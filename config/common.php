@@ -1,12 +1,12 @@
 <?php
 return [
     'page_size' => [
-        10,
-        20,
-        30,
-        40
+        8,
+        16,
+        24,
+        32
     ],
-    'default_page_size' => 10
+    'default_page_size' => 8
 
 ]
 

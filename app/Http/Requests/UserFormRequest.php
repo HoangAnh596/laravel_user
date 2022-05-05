@@ -40,6 +40,7 @@ class UserFormRequest extends FormRequest
             ],         
             'phone' => [
                 'required',
+                'regex:/^0[0-9]{9}$/',
                 Rule::unique('users')->ignore($this->id)
             ],
             'address'=>'required'
@@ -50,7 +51,7 @@ class UserFormRequest extends FormRequest
         }
         return $formRules;
     }
-
+    // validate
     public function messages()
     {
         return [

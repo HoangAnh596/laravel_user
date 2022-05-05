@@ -18,8 +18,8 @@ class CreateTableUser extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('image')->nullable();
-            $table->integer('phone');
-            $table->string('address');
+            $table->string('phone');
+            $table->string('address'); // Sửa lại định dạng
             $table->string('password');
             $table->timestamps();
         });
