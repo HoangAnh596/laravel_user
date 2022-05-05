@@ -23,23 +23,24 @@
         <th scope="col">Action</th>
         </thead>
         <tbody>
-        @foreach($user_data as $u)
+        @foreach($users as $user)
             <tr>
-                <td scope="row">{{(($user_data->currentPage()-1)*config('common.default_page_size')) + $loop->iteration}}</td>
-                <td>{{$u->name}}</td>
-                <td>{{$u->email}}</td>
+                <td scope="row">{{(($users->currentPage()-1)*config('common.default_page_size')) + $loop->iteration}}</td>
+                <td>{{$user->name}}</td>
+                <td>{{$user->email}}</td>
                 <td>
-                    <img src="{{asset('storage/' . $u->image)}}" width="150">
+                    <img src="{{asset('storage/' . $user->image)}}" width="150">
                 </td>
                 <td>
                     <button class="btn btn-info">
-                        <a class="badge badge-primary" href="{{route('users.edit', ['id' => $u->id])}}">Edit</a>
+                        <a class="badge badge-primary" href="{{route('users.edit', ['id' => $user->id])}}">Edit</a>
                     </button>
                     <button class="btn btn-info">
-                        <a class="badge badge-primary" href="{{route('users.show', ['id' => $u->id])}}">Show</a>
+                        <a class="badge badge-primary" href="{{route('users.show', ['id' => $user->id])}}">Show</a>
                     </button>
-                    <form action="{{route('users.remove', ['id' => $u->id])}}" method="POST">
+                    <form action="{{route('users.remove', ['id' => $user->id])}}" method="post">
                         @csrf
+                        @method('delete')
                         <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this item?')" >Delete</button>
                     </form>
                 </td>
@@ -48,7 +49,7 @@
         </tbody>
     </table>
     <nav aria-label="Page navigation example">
-        {{$user_data->links()}}
+        {{$users->links()}}
     </nav>
 
 @endsection

@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Http\Requests\UserFormRequest;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,16 +15,15 @@ class LoginController extends Controller
      */
     public function index(Request $request)
     {
+
         $pagesize = config('common.default_page_size');
         $userQuery = User::where('name', 'like', "%".$request->keyword."%")
-            ->orwhere('email', 'like', "%".$request->keyword."%");
-        //$users = User::all();
+            ->orWhere('email', 'like', "%".$request->keyword."%");
+        // 1. Chưa check nếu người dùng nhập vào ô input thì mới search
+        // 2. Escape giá trị khi search với điều kiện like
+        // 4. Xóa hết debug / comment ko dùng đến
         $users = $userQuery->paginate($pagesize);
-        $users->appends($request->except('page'));
-//        dd($users->currentPage());
-        return view('user.index', [
-                'user_data' => $users
-            ]);
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -34,8 +33,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('user.add', compact('users'));
+        return view('user.add');
     }
 
     /**
@@ -46,15 +44,16 @@ class LoginController extends Controller
      */
     public function store(UserFormRequest $request)
     {
-        $model = new User();
+        $users = new User();
 
-        $model->fill($request->all());
+        $users->fill($request->all());
         if($request->hasFile('file_upload')) {
             $newFileName = uniqid() . '-' . $request->file_upload->getClientOriginalName();
-            $path = $request->file_upload->storeAs('public/uploads/users', $newFileName);
-            $model->image = str_replace('public/', '', $path);
+            $imagePath = $request->file_upload->storeAs('public/uploads/users', $newFileName);
+            $users->image = str_replace('public/', '', $imagePath);
         }
-        $model->save();
+        $users->save();
+        // if($users->save()) {}
 
         return redirect(route('users.index'));
     }
@@ -67,13 +66,13 @@ class LoginController extends Controller
      */
     public function show($id)
     {
-        $users = User::find($id);
+        $users = User::findOrFail($id);
         if (!$users) {
+
             return redirect()->back();
         }
-        return view('user.show', [
-            'user_show' => $users
-        ]);
+        return view('user.show', compact('users'));
+        // Update lại hàm này + thêm message báo lỗi
     }
 
     /**
@@ -84,10 +83,11 @@ class LoginController extends Controller
      */
     public function edit($id)
     {
-        $users = User::find($id);
+        $users = User::findOrFail($id); 
 
         if (!$users) {
             return redirect()->back();
+            // Thêm message báo lỗi
         }
         return view('user.edit', compact('users'));
     }
@@ -101,17 +101,18 @@ class LoginController extends Controller
      */
     public function update($id, UserFormRequest $request)
     {
-        $model = User::find($id);
-        if(!$model) {
+        $users = User::find($id);
+        if(!$users) {
+
             return redirect(route('users.index'));
         }
         if($request->hasFile('file_upload')) {
             $newFileName = uniqid() . '-' . $request->file_upload->getClientOriginalName();
-            $path = $request->file_upload->storeAs('public/uploads/users', $newFileName);
-            $model->image = str_replace('public/', '', $path);
+            $imagePath = $request->file_upload->storeAs('public/uploads/users', $newFileName);
+            $users->image = str_replace('public/', '', $imagePath);
         }
-        $model->fill($request->all());
-        $model->save();
+        $users->fill($request->all());
+        $users->save();
 
         return redirect(route('users.index'));
     }

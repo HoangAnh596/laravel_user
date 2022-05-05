@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-6">
             <div class="form-group">
-                <label for="">Tên sản phẩm</label>
+                <label for="">Name: </label>
                 <input type="text" name="name" class="form-control" value="{{old('name')}}">
                 @error('name')
                     <span class="text-danger">{{$message}}</span>
@@ -29,7 +29,7 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">ảnh</label>
+                <label for="">Image</label>
                 <input type="file" name="file_upload" class="form-control">
                 @error('file_upload')
                     <span class="text-danger">{{$message}}</span>
@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-12 d-flex justify-content-end">
-            <button class="btn btn-primary" type="submit">Lưu</button>
+            <button class="btn btn-primary" type="submit">Save</button>
         </div>
     </div>
 </form>
