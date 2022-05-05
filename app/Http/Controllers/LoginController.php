@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Requests\UserFormRequest;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -43,7 +44,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserFormRequest $request)
     {
         $model = new User();
 
@@ -98,7 +99,7 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id, Request $request)
+    public function update($id, UserFormRequest $request)
     {
         $model = User::find($id);
         if(!$model) {
