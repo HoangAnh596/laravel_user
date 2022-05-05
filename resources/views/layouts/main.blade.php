@@ -11,10 +11,9 @@
 <div class="container">
     <header>
         <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-            <a href="{{route('users.index')}}" class="d-flex align-items-center text-dark text-decoration-none">
-                <span class="fs-4">Home Page</span>
+            <a href="{{route('users.index')}}" class="d-flex align-items-center text-dark text-decoration-none ">
+                <span style="color: red" class="fs-4">Home Page</span>
             </a>
-
             <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
                 <a class="me-3 py-2 text-dark text-decoration-none" href="#">Features</a>
                 <a class="me-3 py-2 text-dark text-decoration-none" href="#">Enterprise</a>
@@ -31,7 +30,9 @@
         @yield('content')
     </main>
     <footer>
-        <b>anhhn@vnext.com.vn</b>
+        <div class="d-flex justify-content-center">Footer</div>
+        <div class="d-flex justify-content-center"><b>anhhn@vnext.com.vn</b></div>
+
     </footer>
 </div>
 

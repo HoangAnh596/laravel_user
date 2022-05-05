@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Laravel - CRUD')
+@section('title', 'CRUD-Add')
 @section('content')
 <form action="" method="POST" enctype="multipart/form-data">
     @csrf
