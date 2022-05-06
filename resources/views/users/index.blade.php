@@ -9,11 +9,18 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <button class="btn btn-info">
-                <a class="badge badge-primary" href="{{route('users.add')}}">Add Use</a>
+                <a class="badge badge-primary" href="{{ route('users.add') }}">Add Use</a>
             </button>
         </div>
     </nav>
-
+    @if(session('message') != null)
+        <div class="text-danger">{{ session('message') }}</div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success text-white" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
     <table class="table">
         <thead>
         <th scope="col">Id</th>
@@ -25,20 +32,20 @@
         <tbody>
         @foreach($users as $user)
             <tr>
-                <td scope="row">{{(($users->currentPage()-1)*config('common.default_page_size')) + $loop->iteration}}</td>
-                <td>{{$user->name}}</td>
-                <td>{{$user->email}}</td>
+                <td scope="row">{{ (($users->currentPage()-1)*count($users)) + $loop->iteration }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
                 <td>
-                    <img src="{{asset('storage/' . $user->image)}}" width="150">
+                    <img src="{{ asset('storage/' . $user->image) }}" width="150">
                 </td>
                 <td>
                     <button class="btn btn-info">
-                        <a class="badge badge-primary" href="{{route('users.edit', ['id' => $user->id])}}">Edit</a>
+                        <a class="badge badge-primary" href="{{ route('users.edit', ['id' => $user->id]) }}">Edit</a>
                     </button>
                     <button class="btn btn-info">
-                        <a class="badge badge-primary" href="{{route('users.show', ['id' => $user->id])}}">Show</a>
+                        <a class="badge badge-primary" href="{{ route('users.show', ['id' => $user->id]) }}">Show</a>
                     </button>
-                    <form action="{{route('users.remove', ['id' => $user->id])}}" method="post">
+                    <form action="{{ route('users.remove', ['id' => $user->id])}}" method="post">
                         @csrf
                         @method('delete')
                         <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this item?')" >Delete</button>
@@ -49,7 +56,7 @@
         </tbody>
     </table>
     <nav aria-label="Page navigation example">
-        {{$users->links()}}
+        {{ $users->links() }}
     </nav>
 
 @endsection

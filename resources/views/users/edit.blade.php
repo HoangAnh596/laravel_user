@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', 'CRUD-Edit')
 @section('content')
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{{route('users.saveEdit',['id'=>$users->id])}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="">Name</label>
