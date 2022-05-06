@@ -32,7 +32,7 @@
         <tbody>
         @foreach($users as $user)
             <tr>
-                <td scope="row">{{ (($users->currentPage()-1)*count($users)) + $loop->iteration }}</td>
+                <td scope="row">{{ (($users->currentPage()-1)*config('common.default_page_size')) + $loop->iteration }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
@@ -45,7 +45,7 @@
                     <button class="btn btn-info">
                         <a class="badge badge-primary" href="{{ route('users.show', ['id' => $user->id]) }}">Show</a>
                     </button>
-                    <form action="{{ route('users.remove', ['id' => $user->id])}}" method="post">
+                    <form action="{{ route('users.remove', ['id' => $user->id]) }}" method="post">
                         @csrf
                         @method('delete')
                         <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this item?')" >Delete</button>

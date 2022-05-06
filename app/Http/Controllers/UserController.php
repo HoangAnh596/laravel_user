@@ -14,21 +14,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function __construct()
-    // {
-        
-    // }
+    public $escapeService;
+    public function __construct(EscapeService $escapeService)
+    {
+        $this->escapeService = $escapeService;
+    }
 
     public function index(Request $request)
     {
+        $users = new User();
 
         $pagesize = config('common.default_page_size');
-        $userQuery = User::where('name', 'like', "%".$request->keyword."%")
-            ->orWhere('email', 'like', "%".$request->keyword."%");
-        // 1. Chưa check nếu người dùng nhập vào ô input thì mới search
-        // 2. Escape giá trị khi search với điều kiện like
-        $users = $userQuery->paginate($pagesize);
-        $users->appends($request->except('page'));
+        $keyword = $request->keyword;
+        if ($keyword) {
+            $users = $users->where('name', 'like', "%".$this->escapeService->escape_like($request->keyword)."%")
+                         ->orWhere('email', 'like', "%".$this->escapeService->escape_like($request->keyword)."%");
+        }
+        $users = $users->paginate($pagesize)->appends($request->except('page'));
 
         return view('users.index', compact('users'));
     }
@@ -122,7 +124,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        User::destroy($user);
+        User::destroy($user->id);
 
         return redirect()->route('users.index')->with(['message' => 'Delete Success']);
     }
